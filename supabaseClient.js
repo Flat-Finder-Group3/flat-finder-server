@@ -6,3 +6,5 @@ const PUBLIC_SUPABASE_URL = "https://ewbcpghsdfeysreslsbk.supabase.co/"
 const supabase = supabasejs.createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
 module.exports = supabase
+
+
