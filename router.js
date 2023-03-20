@@ -14,4 +14,6 @@ router.get('/', (req, res) => {
 // router.get('/listing', listing_controller.getListing)
 // router.get('/avatar', usr_controller.getAvatarURL)
 
+router.get('/listing', listing_controller.getListings)
+
 module.exports = router
