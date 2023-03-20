@@ -21,4 +21,7 @@ router.get('/ticket', ticket_controller.getUserTicket)
 router.put('/ticket', ticket_controller.changeStatus)
 router.delete('/ticket', ticket_controller.deleteTicket)
 
+router.get('/listing', listing_controller.getListings)
+router.post('/listing', listing_controller.addListing)
+
 module.exports = router
