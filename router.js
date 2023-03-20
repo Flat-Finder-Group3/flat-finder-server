@@ -17,6 +17,9 @@ router.get('/', (req, res) => {
 // router.get('/listing', listing_controller.getListing)
 // router.get('/avatar', usr_controller.getAvatarURL)
 router.post('/ticket', ticket_controller.addTicket)
+router.get('/ticket', ticket_controller.getUserTicket)
+router.put('/ticket', ticket_controller.changeStatus)
+router.delete('/ticket', ticket_controller.deleteTicket)
 
 router.get('/listing', listing_controller.getListings)
 

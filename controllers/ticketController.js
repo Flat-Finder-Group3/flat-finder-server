@@ -3,14 +3,41 @@ const supabase = require('../supabaseClient.js')
 async function addTicket(req, res) {
     const ticket = req.body
 
-    console.log(ticket)
+    // console.log(ticket)
 
     const response = await supabase.from('ticket').insert(ticket)
 
     res.status(200).json(response)
+}
 
+async function deleteTicket(req, res){
+    const ticketID = req.body.ticketID
+
+    const response = await supabase.from('ticket').delete().eq('id', ticketID)
+
+    res.status(200).json(response)
+}
+
+async function getUserTicket(req, res) {
+    const id = req.body.id
+
+    const response = await supabase.from('ticket').select().eq('creator', id)
+
+    res.status(200).json(response)
+}
+
+async function changeStatus(req, res){
+    const ticketID = req.body.ticketID
+    const newStatus = req.body.newStatus
+
+    const response = await supabase.from('ticket').update({ status: newStatus }).eq('id', ticketID)
+
+    res.status(200).json(response)
 }
 
 module.exports = {
-    addTicket
+    addTicket,
+    getUserTicket,
+    changeStatus,
+    deleteTicket
 }
