@@ -26,7 +26,14 @@ async function getListings(req, res) {
   res.status(200).json(data)
 }
 
+async function addListing(req, res) {
+  const listing = req.body
+  const response = await supabase.from('listing').insert(listing)
+  res.status(200).json(response)
+}
+
 
 module.exports = {
-  getListings
+  getListings,
+  addListing
 }
