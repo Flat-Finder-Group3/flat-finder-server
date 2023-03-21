@@ -7,6 +7,8 @@ const listing_controller = require('./controllers/listingController')
 
 const ticket_controller = require('./controllers/ticketController')
 
+const fav_listing_controller = require('./controllers/favListingController')
+
 router.get('/', (req, res) => {
     res.send('Hello World!')
 })
@@ -23,5 +25,9 @@ router.delete('/ticket', ticket_controller.deleteTicket)
 
 router.get('/listing', listing_controller.getListings)
 router.post('/listing', listing_controller.addListing)
+
+router.post('/favlisting', fav_listing_controller.addFavListing)
+router.delete('/favlisting', fav_listing_controller.removeFavListing)
+
 
 module.exports = router
