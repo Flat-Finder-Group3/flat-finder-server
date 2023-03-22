@@ -6,6 +6,7 @@ const usr_controller = require('./controllers/userController')
 const listing_controller = require('./controllers/listingController')
 const ticket_controller = require('./controllers/ticketController')
 const fav_listing_controller = require('./controllers/favListingController')
+const forum_post_controller = require('./controllers/forumPostController')
 
 router.get('/', (req, res) => {
     res.send('Hello World!')
@@ -26,6 +27,10 @@ router.post('/listing', listing_controller.addListing)
 
 router.post('/favlisting', fav_listing_controller.addFavListing)
 router.delete('/favlisting', fav_listing_controller.removeFavListing)
-router.get('/favlisting',fav_listing_controller.getFavListings)
+router.get('/favlisting', fav_listing_controller.getFavListings)
+
+router.post('/forum-post', forum_post_controller.addForumPost)
+router.delete('/forum-post', forum_post_controller.removeForumPost)
+router.get('/forum-post', forum_post_controller.getForumPosts)
 
 module.exports = router
