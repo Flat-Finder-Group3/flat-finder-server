@@ -24,6 +24,7 @@ async function getListings(req, res) {
   if (error) {
     res.json(error)
   }
+  console.log("Here is the data: ", data)
   res.status(200).json(data)
 }
 
