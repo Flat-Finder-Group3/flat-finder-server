@@ -1,6 +1,5 @@
 const supabase = require('../supabaseClient.js')
 
-
 // async function getListing(req, res) {
 
 //   const response = await supabase
