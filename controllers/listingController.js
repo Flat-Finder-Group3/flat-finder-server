@@ -18,8 +18,9 @@ const supabase = require('../supabaseClient.js')
 
 async function getListings(req, res) {
   const { data, error } = await supabase
-  .from('listing')
-  .select("*, owner( * )")
+                                  .from('listing')
+                                  .select("*, owner( * )")
+                                  
   if (error) {
     res.json(error)
   }

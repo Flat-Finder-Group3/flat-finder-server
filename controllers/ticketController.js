@@ -10,7 +10,7 @@ async function addTicket(req, res) {
     res.status(200).json(response)
 }
 
-async function deleteTicket(req, res){
+async function deleteTicket(req, res) {
     const ticketID = req.body.ticketID
 
     const response = await supabase.from('ticket').delete().eq('id', ticketID)
@@ -21,12 +21,15 @@ async function deleteTicket(req, res){
 async function getUserTicket(req, res) {
     const id = req.body.id
 
-    const response = await supabase.from('ticket').select().eq('creator', id)
+    const response = await supabase
+                            .from('ticket')
+                            .select()
+                            .eq('creator', id)
 
     res.status(200).json(response)
 }
 
-async function changeStatus(req, res){
+async function changeStatus(req, res) {
     const ticketID = req.body.ticketID
     const newStatus = req.body.newStatus
 

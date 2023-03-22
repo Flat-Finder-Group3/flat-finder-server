@@ -28,6 +28,6 @@ router.post('/listing', listing_controller.addListing)
 
 router.post('/favlisting', fav_listing_controller.addFavListing)
 router.delete('/favlisting', fav_listing_controller.removeFavListing)
-
+router.get('/favlisting',fav_listing_controller.getFavListings)
 
 module.exports = router
