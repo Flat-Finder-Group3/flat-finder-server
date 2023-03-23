@@ -8,6 +8,8 @@ const ticket_controller = require('./controllers/ticketController')
 const fav_listing_controller = require('./controllers/favListingController')
 const forum_post_controller = require('./controllers/forumPostController')
 const forum_controller = require('./controllers/forumController')
+const conversation_controller = require('./controllers/conversationController')
+const message_controller = require('./controllers/messageController')
 
 router.get('/', (req, res) => {
     res.send('Hello World!')
@@ -35,5 +37,10 @@ router.delete('/forum-post', forum_post_controller.removeForumPost)
 router.get('/forum-post', forum_post_controller.getForumPosts)
 
 router.post('/forum', forum_controller.addForum)
+
+router.post('/conversation', conversation_controller.addConversation)
+
+router.post('/message', message_controller.addMessage)
+router.get('/message', message_controller.getMessage)
 
 module.exports = router
