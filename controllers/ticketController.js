@@ -19,12 +19,11 @@ async function deleteTicket(req, res) {
 }
 
 async function getUserTicket(req, res) {
-    const id = req.body.id
 
     const response = await supabase
                             .from('ticket')
                             .select()
-                            .eq('creator', id)
+                            .eq('creator', req.query.user_id)
 
     res.status(200).json(response)
 }
