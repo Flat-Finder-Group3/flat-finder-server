@@ -13,13 +13,11 @@ async function getForumPosts(req, res) {
 
 
 async function addForumPost(req, res) {
+    const forumPost = req.body
+
     const result = await supabase
                     .from('forum_post')
-                    .insert({
-                        author: req.body.user_id,
-                        content: req.body.content,
-                        forum: req.body.forum_id
-                    })
+                    .insert(forumPost)
 
 
     res.status(200).json(result)

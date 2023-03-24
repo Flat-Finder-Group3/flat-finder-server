@@ -29,12 +29,31 @@ async function getListings(req, res) {
 
 async function addListing(req, res) {
   const listing = req.body
-  const response = await supabase.from('listing').insert(listing)
-  res.status(200).json(response)
+  const response = await supabase.from('listing').insert(listing).select()
+  const listingID = response.data[0].id
+
+  if(response){
+    const response2 = await supabase.from('forum').insert({listing: listingID}).select()
+    const forumID = response2.data[0].id
+
+    if(response2){
+      const response3 = await supabase.from('listing').update({forum: forumID}).eq('id', listingID).select()
+      res.status(200).json(response3)
+      // console.log(response3)
+    }
+    // console.log(response2)
+  }
 }
+
+async function deleteListing(req, res){
+    const listingID = req.body.listing_id
+    const response = await supabase.from('listing').delete().eq("id", listingID)
+    res.status(200).json(response)
+  }
 
 
 module.exports = {
   getListings,
-  addListing
+  addListing,
+  deleteListing,
 }
