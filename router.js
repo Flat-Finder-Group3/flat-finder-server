@@ -7,7 +7,6 @@ const listing_controller = require('./controllers/listingController')
 const ticket_controller = require('./controllers/ticketController')
 const fav_listing_controller = require('./controllers/favListingController')
 const forum_post_controller = require('./controllers/forumPostController')
-const forum_controller = require('./controllers/forumController')
 const conversation_controller = require('./controllers/conversationController')
 const message_controller = require('./controllers/messageController')
 
@@ -27,6 +26,7 @@ router.delete('/ticket', ticket_controller.deleteTicket)
 
 router.get('/listing', listing_controller.getListings)
 router.post('/listing', listing_controller.addListing)
+router.delete('/listing', listing_controller.deleteListing)
 
 router.post('/favlisting', fav_listing_controller.addFavListing)
 router.delete('/favlisting', fav_listing_controller.removeFavListing)
@@ -35,8 +35,6 @@ router.get('/favlisting', fav_listing_controller.getFavListings)
 router.post('/forum-post', forum_post_controller.addForumPost)
 router.delete('/forum-post', forum_post_controller.removeForumPost)
 router.get('/forum-post', forum_post_controller.getForumPosts)
-
-router.post('/forum', forum_controller.addForum)
 
 router.post('/conversation', conversation_controller.addConversation)
 
