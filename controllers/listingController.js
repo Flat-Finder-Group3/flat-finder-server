@@ -52,7 +52,8 @@ async function deleteListing(req, res){
   }
 
 async function getOwnListing(req, res){
-  const user_id = req.body.user_id
+  // const user_id = req.body.user_id
+  const user_id = req.query.user_id
 
   const response = await supabase.from('listing').select().eq('owner', user_id)
 

@@ -24,7 +24,8 @@ router.get('/ticket', ticket_controller.getUserTicket)
 router.put('/ticket', ticket_controller.changeStatus)
 router.delete('/ticket', ticket_controller.deleteTicket)
 
-router.get('/listing', listing_controller.getListings)
+router.get('/listings', listing_controller.getListings)
+router.get('/listing', listing_controller.getOwnListing)
 router.post('/listing', listing_controller.addListing)
 router.delete('/listing', listing_controller.deleteListing)
 
