@@ -51,9 +51,18 @@ async function deleteListing(req, res){
     res.status(200).json(response)
   }
 
+async function getOwnListing(req, res){
+  const user_id = req.body.user_id
+
+  const response = await supabase.from('listing').select().eq('owner', user_id)
+
+  res.status(200).json(response)
+}
+
 
 module.exports = {
   getListings,
   addListing,
   deleteListing,
+  getOwnListing
 }
