@@ -7,7 +7,7 @@ async function addFavListing(req, res) {
         .insert({
             user: req.body.user_id,
             listing: req.body.listing_id
-        })
+        }).select()
 
 
     res.status(200).json(result)
