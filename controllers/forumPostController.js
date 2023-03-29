@@ -5,7 +5,7 @@ async function getForumPosts(req, res) {
 
     const result = await supabase  
                         .from('forum_post')
-                        .select("*, forum(*)")
+                        .select("*, forum(*), author(*)")
                         .eq('forum', req.query.forum_id)
 
     res.status(200).json(result)
