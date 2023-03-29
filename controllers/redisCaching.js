@@ -1,7 +1,8 @@
 // redis for caching database
 const redis = require('redis')
 const redisClient = redis.createClient({
-    legacyMode: true
+    legacyMode: true,
+    url: "redis://red-cgi40afdvk4o0mtvm5cg:6379"
 })
 
 const DEFAULT_EXPIRATION = 3600; // 1 hour
