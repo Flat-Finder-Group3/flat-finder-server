@@ -1,14 +1,18 @@
 const supabase = require('../supabaseClient.js')
+const redisCaching = require('./redisCaching.js');
 
 
 async function getForumPosts(req, res) {
 
-    const result = await supabase  
-                        .from('forum_post')
-                        .select("*, forum(*), author(*)")
-                        .eq('forum', req.query.forum_id)
+    const forumPosts = await redisCaching.getOrSetCache(`forum_post:${req.query.forum_id}`, async () => {
 
-    res.status(200).json(result)
+        return await supabase  
+            .from('forum_post')
+            .select("*, forum(*), author(*)")
+            .eq('forum', req.query.forum_id)
+    })
+
+    res.status(200).json(forumPosts)
 }
 
 
