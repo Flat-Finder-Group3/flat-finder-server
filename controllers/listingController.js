@@ -1,21 +1,30 @@
 const supabase = require('../supabaseClient.js')
-const redisCaching = require('./redisCaching.js')
 
+// async function getListing(req, res) {
+
+//   const response = await supabase
+//     .from('listing')
+//     .select(`
+//       *,
+//       owner (
+//        * 
+//       )
+//     `).eq('id', '1') 
+
+//   console.log('Response: ', response)
+//   res.status(201).json(response)
+// }
 
 async function getListings(req, res) {
-  const listings = await redisCaching.getOrSetCache("listings", async () => {
-      const { data, error } = await supabase.from('listing').select("*, owner( * )")
-                                    
-      if (error) {
-        res.json(error)
-      }
-
-      return data
-  })
-
-  // console.log(listings)
-
-  res.status(200).json(listings)
+  const { data, error } = await supabase
+                                  .from('listing')
+                                  .select("*, owner( * )")
+                                  
+  if (error) {
+    res.json(error)
+  }
+  console.log("Here is the data: ", data)
+  res.status(200).json(data)
 }
 
 async function addListing(req, res) {
