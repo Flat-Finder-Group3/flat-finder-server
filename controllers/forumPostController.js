@@ -17,7 +17,7 @@ async function addForumPost(req, res) {
 
     const result = await supabase
                     .from('forum_post')
-                    .insert(forumPost)
+                    .insert(forumPost).select()
 
 
     res.status(200).json(result)
