@@ -6,7 +6,6 @@ const redisClient = redis.createClient({
 
 const DEFAULT_EXPIRATION = 3600; // 1 hour
 
-
 async function getOrSetCache(key, cb) {
 
     if (!redisClient.isOpen) {
