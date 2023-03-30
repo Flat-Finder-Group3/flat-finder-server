@@ -1,5 +1,4 @@
 const supabase = require('../supabaseClient.js')
-const redisCaching = require('./redisCaching.js');
 
 async function addTicket(req, res) {
     const ticket = req.body

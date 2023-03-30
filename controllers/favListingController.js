@@ -1,8 +1,4 @@
-const redisCaching = require('./redisCaching.js');
-
-// supabase for database
 const supabase = require('../supabaseClient.js')
-
 
 async function addFavListing(req, res) {
 
@@ -20,7 +16,6 @@ async function addFavListing(req, res) {
 async function getFavListings(req, res) {
 
     // http://localhost:3001/favlisting?user_id=1
-    let usrID = req.query.user_id
 
     const favListings = await redisCaching.getOrSetCache(`favourite_listings:${usrID}`, async () => {
 
