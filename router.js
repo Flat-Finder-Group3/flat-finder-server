@@ -40,6 +40,7 @@ router.delete('/forum-post', forum_post_controller.removeForumPost)
 router.get('/forum-post', forum_post_controller.getForumPosts)
 
 router.post('/conversation', conversation_controller.addConversation)
+router.get('/conversation', conversation_controller.getConversation)
 
 router.post('/message', message_controller.addMessage)
 router.get('/message', message_controller.getMessage)
