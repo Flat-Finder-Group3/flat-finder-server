@@ -26,11 +26,16 @@ async function getConversation(req, res) {
       .eq("user2", user1)
     ])
 
-    if (result1.data.length >= result2.data.length){
+    if (result1.data.length > result2.data.length){
       res.json(result1.data[0]);
-    } else {
-      res.json(result2.data[0])
-    }
+    } else if (result2.data.length > result1.data.length){
+      console.log('second if', result1.data, result2.data )
+      res.json(result2.data[0]);
+    } else if (result1.data.length === 0 && result2.data.length === 0) {
+      const response = await supabase.from('conversation').insert({user1, user2}).select()
+      console.log({response})
+      res.json(response.data[0])
+    } 
   }
   
 

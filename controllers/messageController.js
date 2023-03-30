@@ -3,7 +3,7 @@ const supabase = require('../supabaseClient.js')
 async function addMessage(req, res){
     const message = req.body
 
-    const response = await supabase.from('message').insert(message)
+    const response = await supabase.from('message').insert(message).select()
 
     res.status(200).json(response)
 }
