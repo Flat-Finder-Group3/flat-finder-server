@@ -1,4 +1,5 @@
 const supabase = require('../supabaseClient.js')
+const redisCaching = require('./redisCaching.js');
 
 async function addMessage(req, res){
     const message = req.body
@@ -11,9 +12,12 @@ async function addMessage(req, res){
 async function getMessage(req, res){
     const conversationID = req.body.id
 
-    const response = await supabase.from('message').select().eq('conversation_id', conversationID)
+    const messages = await redisCaching.getOrSetCache(`messages:${conversationID}`, async () => {
 
-    res.status(200).json(response)
+        return await supabase.from('message').select().eq('conversation_id', conversationID)
+    })
+
+    res.status(200).json(messages)
 }
 
 module.exports = {

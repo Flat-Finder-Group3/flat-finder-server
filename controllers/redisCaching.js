@@ -19,6 +19,7 @@ async function getOrSetCache(key, cb) {
                 console.log('cache hit')
                 return resolve(JSON.parse(data))
             } 
+            console.log('cache miss')
             const databaseData = await cb();
             redisClient.setEx(key, DEFAULT_EXPIRATION, JSON.stringify(databaseData))
             resolve(databaseData)

@@ -22,7 +22,7 @@ async function getFavListings(req, res) {
     // http://localhost:3001/favlisting?user_id=1
     let usrID = req.query.user_id
 
-    const favListing = await redisCaching.getOrSetCache(`favourite_listing:${usrID}`, async () => {
+    const favListings = await redisCaching.getOrSetCache(`favourite_listings:${usrID}`, async () => {
 
         return await supabase  
             .from('favourite_listing')
@@ -30,7 +30,7 @@ async function getFavListings(req, res) {
             .eq('user', usrID)
     })
 
-    res.status(200).json(favListing)
+    res.status(200).json(favListings)
     
 }
 

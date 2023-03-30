@@ -17,7 +17,7 @@ async function deleteTicket(req, res) {
 
 async function getUserTicket(req, res) {
 
-    const ticket = await redisCaching.getOrSetCache(`favourite_listing:${req.query.user_id}`, async () => {
+    const tickets = await redisCaching.getOrSetCache(`tickets:${req.query.user_id}`, async () => {
 
         return await supabase
             .from('ticket')
@@ -25,14 +25,17 @@ async function getUserTicket(req, res) {
             .eq('creator', req.query.user_id)
     })
 
-    res.status(200).json(ticket)
+    res.status(200).json(tickets)
 }
 
 async function changeStatus(req, res) {
     const ticketID = req.body.ticketID
     const newStatus = req.body.newStatus
 
-    const response = await supabase.from('ticket').update({ status: newStatus }).eq('id', ticketID)
+    const response = await supabase
+        .from('ticket')
+        .update({ status: newStatus })
+        .eq('id', ticketID)
 
     res.status(200).json(response)
 }

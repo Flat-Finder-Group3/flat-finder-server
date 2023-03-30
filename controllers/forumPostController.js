@@ -4,7 +4,7 @@ const redisCaching = require('./redisCaching.js');
 
 async function getForumPosts(req, res) {
 
-    const forumPosts = await redisCaching.getOrSetCache(`forum_post:${req.query.forum_id}`, async () => {
+    const forumPosts = await redisCaching.getOrSetCache(`forum_posts:${req.query.forum_id}`, async () => {
 
         return await supabase  
             .from('forum_post')
