@@ -27,6 +27,7 @@ router.put('/ticket', ticket_controller.changeStatus)
 router.delete('/ticket', ticket_controller.deleteTicket)
 
 router.get('/listings', listing_controller.getListings)
+
 router.get('/listing', listing_controller.getOwnListing)
 router.post('/listing', listing_controller.addListing)
 router.delete('/listing', listing_controller.deleteListing)
@@ -37,9 +38,12 @@ router.post('/favlisting', fav_listing_controller.addFavListing)
 router.delete('/favlisting', fav_listing_controller.removeFavListing)
 router.get('/favlisting', fav_listing_controller.getFavListings)
 
+router.get('/forum-posts', forum_post_controller.getForumPosts)
+
 router.post('/forum-post', forum_post_controller.addForumPost)
 router.delete('/forum-post', forum_post_controller.removeForumPost)
-router.get('/forum-post', forum_post_controller.getForumPosts)
+router.get('/forum-post', forum_post_controller.getForumPostById)
+
 
 router.post('/conversation', conversation_controller.addConversation)
 router.get('/conversation', conversation_controller.getConversation)
