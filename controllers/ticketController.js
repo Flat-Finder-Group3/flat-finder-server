@@ -24,6 +24,18 @@ async function getUserTicket(req, res) {
     res.status(200).json(response)
 }
 
+
+async function getTickets(req, res) {
+
+    const {data, error} = await supabase
+                            .from('ticket')
+                            .select('*, creator(*)')
+
+    if (error) res.json(error)
+    else res.json(data)
+}
+
+
 async function changeStatus(req, res) {
     const ticketID = req.body.ticketID
     const newStatus = req.body.newStatus
@@ -37,5 +49,6 @@ module.exports = {
     addTicket,
     getUserTicket,
     changeStatus,
+    getTickets,
     deleteTicket
 }

@@ -19,6 +19,8 @@ router.get('/', (req, res) => {
 // router.get('/user/:token', usr_controller.getUserFromToken)
 // router.get('/listing', listing_controller.getListing)
 // router.get('/avatar', usr_controller.getAvatarURL)
+router.get('/tickets', ticket_controller.getTickets)
+
 router.post('/ticket', ticket_controller.addTicket)
 router.get('/ticket', ticket_controller.getUserTicket)
 router.put('/ticket', ticket_controller.changeStatus)
