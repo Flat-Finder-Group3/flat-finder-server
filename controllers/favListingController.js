@@ -19,7 +19,7 @@ async function getFavListings(req, res) {
 
     const result = await supabase  
         .from('favourite_listing')
-        .select("*, listing(*)")
+        .select("*, listing(*, owner(*))")
         .eq('user', req.query.user_id)
 
     res.status(200).json(result)
