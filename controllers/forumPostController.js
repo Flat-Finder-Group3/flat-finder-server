@@ -11,6 +11,16 @@ async function getForumPosts(req, res) {
     res.status(200).json(result)
 }
 
+async function getForumPostById(req, res){
+    const {data, error} = await supabase  
+                        .from('forum_post')
+                        .select("*, author( * )")
+                        .eq('id', req.query.post_id)
+
+    if (error) res.json(error)
+    else res.json(data[0]) 
+}
+
 
 async function addForumPost(req, res) {
     const forumPost = req.body
@@ -34,5 +44,5 @@ async function removeForumPost(req, res) {
 }
 
 module.exports = {
-    getForumPosts, addForumPost, removeForumPost
+    getForumPosts, addForumPost, removeForumPost, getForumPostById
 }
