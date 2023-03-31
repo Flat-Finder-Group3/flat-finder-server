@@ -55,7 +55,7 @@ async function getOwnListing(req, res){
   // const user_id = req.body.user_id
   const user_id = req.query.user_id
 
-  const response = await supabase.from('listing').select().eq('owner', user_id)
+  const response = await supabase.from('listing').select("*, owner(*)").eq('owner', user_id)
 
   res.status(200).json(response)
 }
