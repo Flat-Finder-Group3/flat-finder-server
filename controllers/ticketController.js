@@ -39,8 +39,9 @@ async function getTickets(req, res) {
 async function changeStatus(req, res) {
     const ticketID = req.body.ticketID
     const newStatus = req.body.newStatus
+    const comment = req.body.comment
 
-    const response = await supabase.from('ticket').update({ status: newStatus }).eq('id', ticketID)
+    const response = await supabase.from('ticket').update({ status: newStatus, comment }).eq('id', ticketID)
 
     res.status(200).json(response)
 }
