@@ -9,8 +9,20 @@ async function addConversation(req, res){
 
 }
 
+//to complete:
+async function getConversationById(req, res) {
+  const {data, error} = await supabase  
+  .from('conversation')
+  .select("*, user1(*), user2(*)")
+  .eq('id', req.query.conversation_id)
+
+if (error) res.json(error)
+else res.json(data[0]) 
+}
+
 async function getConversation(req, res) {
-    const { user1, user2 } = req.query;
+    // const { user1, user2 } = req.query;
+    const {user1, user2} = req.params
     console.log({ user1, user2 });
   
     const [result1, result2] = await Promise.all([
@@ -51,5 +63,6 @@ async function getConversation(req, res) {
 
 module.exports = {
     addConversation,
-    getConversation
+    getConversation,
+    getConversationById
 }
