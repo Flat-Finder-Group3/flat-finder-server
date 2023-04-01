@@ -20,6 +20,24 @@ if (error) res.json(error)
 else res.json(data[0]) 
 }
 
+
+async function getUserConversations(req, res){
+
+  const [result1, result2] = await Promise.all([
+    supabase
+      .from("conversation")
+      .select("*, user2(*)")
+      .eq("user1", req.query.user_id),
+      supabase
+      .from("conversation")
+      .select("*, user1 (*)")
+      .eq("user2", req.query.user_id)
+    ])
+
+    res.json(result1.data.concat(result2.data))
+
+}
+
 async function getConversation(req, res) {
     // const { user1, user2 } = req.query;
     const {user1, user2} = req.params
@@ -64,5 +82,6 @@ async function getConversation(req, res) {
 module.exports = {
     addConversation,
     getConversation,
-    getConversationById
+    getConversationById,
+    getUserConversations
 }
