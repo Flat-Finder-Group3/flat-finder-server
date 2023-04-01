@@ -9,14 +9,15 @@ async function addMessage(req, res){
 }
 
 
-async function getMessage(req, res){
-    const conversationID = req.body.id
+async function getConversationMessages(req, res){
+    const conversation_id = req.query.conversation_id
 
-    const response = await supabase.from('message').select().eq('conversation_id', conversationID)
+    const {data, error} = await supabase.from('message').select().eq('conversation_id', conversation_id)
 
-    res.status(200).json(response)
+    if (error) res.json(error)
+    else res.json(data)
 }
 
 module.exports = {
-    addMessage, getMessage
+    addMessage, getConversationMessages
 }
