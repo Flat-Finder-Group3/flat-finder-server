@@ -1,4 +1,5 @@
 const supabase = require('../supabaseClient.js')
+const redisCaching = require('../redisCaching.js');
 
 
 async function getForumPosts(req, res) {
@@ -21,6 +22,7 @@ async function addForumPost(req, res) {
                     .from('forum_post')
                     .insert(forumPost).select("*, author ( * )")
 
+    redisCaching.removeData(`forum_posts:${req.body.forum}`)
 
     res.status(200).json(result)
 }
@@ -31,6 +33,9 @@ async function removeForumPost(req, res) {
         .from('forum_post')
         .delete()
         .eq('id', req.body.forum_post_id)
+        .select('forum')
+
+    redisCaching.removeData(`forum_posts:${result.data[0].forum}`)
 
     res.status(200).json(result)
 }

@@ -4,7 +4,7 @@ const redis = require('redis')
 //got to use the right redis url
 const redisClient = redis.createClient({
     legacyMode: true,
-    url: "rediss://red-cgi40afdvk4o0mtvm5cg:AtPLtcLlRtcRquz47ZBiKWQpduqlnSex@frankfurt-redis.render.com:6379"
+    // url: "rediss://red-cgi40afdvk4o0mtvm5cg:AtPLtcLlRtcRquz47ZBiKWQpduqlnSex@frankfurt-redis.render.com:6379"
 })
 
 const DEFAULT_EXPIRATION = 3600; // 1 hour
@@ -29,7 +29,37 @@ async function getOrSetCache(key, cb) {
         })
     })
 }
+async function removeData(key) {
+
+    if (!redisClient.isOpen) {
+        await redisClient.connect()
+    }
+
+    await redisClient.del(key)
+
+}
+
+async function removeMatchingData(keyPattern) {
+
+    if (!redisClient.isOpen) {
+        await redisClient.connect()
+    }
+
+    // const matchingKeys = redisClient.keys(keyPattern);
+    // console.log(matchingKeys)
+    // for (k in matchingKeys) {
+    //     redisClient.del(k)
+    // }
+    redisClient.keys(keyPattern, async (err, replies) => {
+        if (err) {
+          return err;
+        }
+
+        await redisClient.del(replies);
+      });
+
+}
 
 module.exports = {
-    getOrSetCache
+    getOrSetCache, removeData, removeMatchingData
 }

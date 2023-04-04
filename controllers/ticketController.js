@@ -1,15 +1,20 @@
 const supabase = require('../supabaseClient.js')
+const redisCaching = require('../redisCaching.js');
 
 async function addTicket(req, res) {
     const ticket = req.body
     const response = await supabase.from('ticket').insert(ticket).select()
+
+    redisCaching.removeData(`tickets:${req.body.creator}`)
+
     res.status(200).json(response)
 }
 
 async function deleteTicket(req, res) {
     const ticketID = req.body.ticketID
 
-    const response = await supabase.from('ticket').delete().eq('id', ticketID)
+    const response = await supabase.from('ticket').delete().eq('id', ticketID).select('creator')
+    redisCaching.removeData(`tickets:${response.data[0].creator}`)
 
     res.status(200).json(response)
 }
@@ -35,6 +40,10 @@ async function changeStatus(req, res) {
         .from('ticket')
         .update({ status: newStatus })
         .eq('id', ticketID)
+        .select('creator')
+
+    redisCaching.removeData(`tickets:${response.data[0].creator}`)
+
 
     res.status(200).json(response)
 }

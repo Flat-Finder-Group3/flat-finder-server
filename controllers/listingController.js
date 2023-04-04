@@ -1,4 +1,5 @@
 const supabase = require('../supabaseClient.js')
+const redisCaching = require('../redisCaching.js');
 
 // async function getListing(req, res) {
 
@@ -46,6 +47,9 @@ async function addListing(req, res) {
 
         if (response2) {
             const response3 = await supabase.from('listing').update({ forum: forumID }).eq('id', listingID).select()
+            
+            redisCaching.removeData("listings")
+            
             res.status(200).json(response3)
             // console.log(response3)
         }
@@ -55,7 +59,20 @@ async function addListing(req, res) {
 
 async function deleteListing(req, res) {
     const listingID = req.body.listing_id
-    const response = await supabase.from('listing').delete().eq("id", listingID)
+    const response = await supabase
+        .from('listing')
+        .delete()
+        .eq("id", listingID)
+        .select('forum')
+
+    // clear cache of everything related to that listing
+    // TODO: keep track of who has favourited this listing so we only clear cache for those users' favourite listing
+   
+    redisCaching.removeData("listings")
+    redisCaching.removeData(`forum_posts:${response.data[0].forum}`)
+    redisCaching.removeMatchingData(`favourite_listings:*`)
+    redisCaching.removeMatchingData(`listings:*`)
+
     res.status(200).json(response)
 }
 
