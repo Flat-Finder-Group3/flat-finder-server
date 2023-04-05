@@ -1,20 +1,6 @@
 const supabase = require('../supabaseClient.js')
 const redisCaching = require('../redisCaching.js');
 
-// async function getListing(req, res) {
-
-//   const response = await supabase
-//     .from('listing')
-//     .select(`
-//       *,
-//       owner (
-//        * 
-//       )
-//     `).eq('id', '1') 
-
-//   console.log('Response: ', response)
-//   res.status(201).json(response)
-// }
 
 async function getListings(req, res) {
 
@@ -30,17 +16,13 @@ async function getListings(req, res) {
 
         return data
     })
-
+    
     res.status(200).json(listings)
 }
 
 async function addListing(req, res) {
     const listing = req.body
-    const response = await supabase
-        .from('listing')
-        .insert(listing)
-        .select()
-
+    const response = await supabase.from('listing').insert(listing).select()
     const listingID = response.data[0].id
 
     if (response) {
@@ -85,7 +67,6 @@ async function getOwnListing(req, res) {
             .from('listing')
             .select('*')
             .eq('owner', user_id);
-    
     })
     
     res.status(200).json(ownListings)
