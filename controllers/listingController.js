@@ -1,4 +1,5 @@
 const supabase = require('../supabaseClient.js')
+const redisCaching = require('../redisCaching.js');
 
 // async function getListing(req, res) {
 
@@ -16,54 +17,89 @@ const supabase = require('../supabaseClient.js')
 // }
 
 async function getListings(req, res) {
-  const { data, error } = await supabase
-                                  .from('listing')
-                                  .select("*, owner( * )")
-                                  
-  if (error) {
-    res.json(error)
-  }
-  console.log("Here is the data: ", data)
-  res.status(200).json(data)
+
+    const listings = await redisCaching.getOrSetCache("listings", async () => {
+
+        const { data, error } = await supabase
+            .from('listing')
+            .select("*, owner( * )")
+
+        if (error) {
+            res.json(error)
+        }
+
+        return data
+    })
+
+    // console.log(listings)
+
+    res.status(200).json(listings)
 }
 
 async function addListing(req, res) {
-  const listing = req.body
-  const response = await supabase.from('listing').insert(listing).select()
-  const listingID = response.data[0].id
+    const listing = req.body
+    const response = await supabase.from('listing').insert(listing).select()
+    const listingID = response.data[0].id
 
-  if(response){
-    const response2 = await supabase.from('forum').insert({listing: listingID}).select()
-    const forumID = response2.data[0].id
+    if (response) {
+        const response2 = await supabase.from('forum').insert({ listing: listingID }).select()
+        const forumID = response2.data[0].id
 
-    if(response2){
-      const response3 = await supabase.from('listing').update({forum: forumID}).eq('id', listingID).select()
-      res.status(200).json(response3)
-      // console.log(response3)
+        if (response2) {
+            const response3 = await supabase.from('listing').update({ forum: forumID }).eq('id', listingID).select()
+            
+            redisCaching.removeData("listings")
+            
+            res.status(200).json(response3)
+            // console.log(response3)
+        }
+        // console.log(response2)
     }
-    // console.log(response2)
-  }
 }
 
-async function deleteListing(req, res){
+async function deleteListing(req, res) {
     const listingID = req.body.listing_id
-    const response = await supabase.from('listing').delete().eq("id", listingID)
+    const response = await supabase
+        .from('listing')
+        .delete()
+        .eq("id", listingID)
+        .select('forum, owner')
+
+    // clear cache of everything related to that listing
+    // TODO: keep track of who has favourited this listing so we only clear cache for those users' favourite listing
+   
+    redisCaching.removeData("listings")
+    redisCaching.removeData(`forum_posts:${response.data[0].forum}`)
+    redisCaching.removeMatchingData(`favourite_listings:*`)
+    redisCaching.removeData(`listings:${response.data[0].owner}`)
+
     res.status(200).json(response)
-  }
+}
 
-async function getOwnListing(req, res){
-  // const user_id = req.body.user_id
-  const user_id = req.query.user_id
+async function getOwnListing(req, res) {
+    // const user_id = req.body.user_id
+    const user_id = req.query.user_id
 
-  const response = await supabase.from('listing').select("*, owner(*)").eq('owner', user_id)
+    const ownListings = await redisCaching.getOrSetCache(`listings:${user_id}`, async () => {
+        const { data, error } = await supabase
+            .from('listing')
+            .select('*')
+            .eq('owner', user_id);
+        
+        if (error) {
+            res.json(error)
+        }
 
-  res.status(200).json(response)
+        return data
+    })
+    
+    res.status(200).json(ownListings)
 }
 
 
 module.exports = {
-  getListings,
-  addListing,
-  deleteListing,
-  getOwnListing
+    getListings,
+    addListing,
+    deleteListing,
+    getOwnListing
 }
