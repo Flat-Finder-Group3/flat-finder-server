@@ -1,5 +1,4 @@
 const supabase = require('../supabaseClient.js')
-const redisCaching = require('../redisCaching.js');
 
 
 async function register(req, res) {
