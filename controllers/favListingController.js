@@ -1,5 +1,4 @@
 const supabase = require('../supabaseClient.js')
-const redisCaching = require('../redisCaching.js');
 
 async function addFavListing(req, res) {
 
@@ -10,7 +9,6 @@ async function addFavListing(req, res) {
             listing: req.body.listing_id
         }).select("listing (*, owner (*))")
 
-    await redisCaching.removeData(`favourite_listings:${req.body.user_id}`)
 
     res.status(200).json(result)
 }
@@ -18,17 +16,13 @@ async function addFavListing(req, res) {
 async function getFavListings(req, res) {
 
     // http://localhost:3001/favlisting?user_id=1
-    const usrID = req.query.user_id
 
-    const favListings = await redisCaching.getOrSetCache(`favourite_listings:${usrID}`, async () => {
+    const result = await supabase  
+        .from('favourite_listing')
+        .select("*, listing(*, owner(*))")
+        .eq('user', req.query.user_id)
 
-        return await supabase  
-            .from('favourite_listing')
-            .select("*, listing(*, owner(*))")
-            .eq('user', usrID)
-    })
-
-    res.status(200).json(favListings)
+    res.status(200).json(result)
     
 }
 
@@ -39,8 +33,6 @@ async function removeFavListing(req, res) {
         .delete()
         .eq('user', req.body.user_id)
         .eq('listing', req.body.listing_id)
-
-    await redisCaching.removeData(`favourite_listings:${req.body.user_id}`)
 
     res.status(200).json(result)
 }
