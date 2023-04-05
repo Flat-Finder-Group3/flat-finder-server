@@ -55,7 +55,7 @@ async function removeMatchingData(keyPattern) {
           return err;
         }
 
-        await redisClient.del(replies);
+        if (replies.length > 0) await redisClient.del(replies);
       });
 
 }

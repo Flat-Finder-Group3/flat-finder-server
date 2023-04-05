@@ -63,7 +63,7 @@ async function deleteListing(req, res) {
         .from('listing')
         .delete()
         .eq("id", listingID)
-        .select('forum')
+        .select('forum, owner')
 
     // clear cache of everything related to that listing
     // TODO: keep track of who has favourited this listing so we only clear cache for those users' favourite listing
@@ -71,7 +71,7 @@ async function deleteListing(req, res) {
     redisCaching.removeData("listings")
     redisCaching.removeData(`forum_posts:${response.data[0].forum}`)
     redisCaching.removeMatchingData(`favourite_listings:*`)
-    redisCaching.removeMatchingData(`listings:*`)
+    redisCaching.removeData(`listings:${response.data[0].owner}`)
 
     res.status(200).json(response)
 }
