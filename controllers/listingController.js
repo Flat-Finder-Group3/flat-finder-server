@@ -31,14 +31,16 @@ async function getListings(req, res) {
         return data
     })
 
-    // console.log(listings)
-
     res.status(200).json(listings)
 }
 
 async function addListing(req, res) {
     const listing = req.body
-    const response = await supabase.from('listing').insert(listing).select()
+    const response = await supabase
+        .from('listing')
+        .insert(listing)
+        .select()
+
     const listingID = response.data[0].id
 
     if (response) {
@@ -51,9 +53,7 @@ async function addListing(req, res) {
             redisCaching.removeData("listings")
             
             res.status(200).json(response3)
-            // console.log(response3)
         }
-        // console.log(response2)
     }
 }
 
@@ -81,16 +81,11 @@ async function getOwnListing(req, res) {
     const user_id = req.query.user_id
 
     const ownListings = await redisCaching.getOrSetCache(`listings:${user_id}`, async () => {
-        const { data, error } = await supabase
+        return await supabase
             .from('listing')
             .select('*')
             .eq('owner', user_id);
-        
-        if (error) {
-            res.json(error)
-        }
-
-        return data
+    
     })
     
     res.status(200).json(ownListings)
