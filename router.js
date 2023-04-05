@@ -53,6 +53,7 @@ router.get('/conversation/:user1/:user2', conversation_controller.getConversatio
 
 
 router.post('/message', message_controller.addMessage)
+router.put('/message', message_controller.readMessage)
 router.get('/message', message_controller.getConversationMessages)
 
 module.exports = router

@@ -18,6 +18,14 @@ async function getConversationMessages(req, res){
     else res.json(data)
 }
 
+async function readMessage(req, res) {
+
+    const {data, error} = await supabase.from('message').update({ is_read: true }).eq('id', req.body.message_id).select();
+
+    if (error) res.json(error)
+    else res.json(data)
+}
+
 module.exports = {
-    addMessage, getConversationMessages
+    addMessage, getConversationMessages, readMessage
 }
