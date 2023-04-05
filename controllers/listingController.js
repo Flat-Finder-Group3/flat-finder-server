@@ -65,7 +65,7 @@ async function getOwnListing(req, res) {
     const ownListings = await redisCaching.getOrSetCache(`listings:${user_id}`, async () => {
         return await supabase
             .from('listing')
-            .select('*')
+            .select('*, owner ( * )  ')
             .eq('owner', user_id);
     })
     
