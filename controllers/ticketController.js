@@ -32,9 +32,22 @@ async function getUserTicket(req, res) {
     res.status(200).json(tickets)
 }
 
+
+async function getTickets(req, res) {
+
+    const {data, error} = await supabase
+                            .from('ticket')
+                            .select('*, creator(*)')
+
+    if (error) res.json(error)
+    else res.json(data)
+}
+
+
 async function changeStatus(req, res) {
     const ticketID = req.body.ticketID
     const newStatus = req.body.newStatus
+    const admin_comment = req.body.admin_comment
 
     const response = await supabase
         .from('ticket')
@@ -45,12 +58,14 @@ async function changeStatus(req, res) {
     redisCaching.removeData(`tickets:${response.data[0].creator}`)
 
 
-    res.status(200).json(response)
+    if (error) res.json(error)
+    else res.json(data)
 }
 
 module.exports = {
     addTicket,
     getUserTicket,
     changeStatus,
+    getTickets,
     deleteTicket
 }

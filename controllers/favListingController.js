@@ -24,7 +24,7 @@ async function getFavListings(req, res) {
 
         return await supabase  
             .from('favourite_listing')
-            .select("*, listing(*)")
+            .select("*, listing(*, owner(*))")
             .eq('user', usrID)
     })
 

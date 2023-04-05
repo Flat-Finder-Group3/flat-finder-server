@@ -11,8 +11,17 @@ async function addMessage(req, res){
     res.status(200).json(response)
 }
 
-async function getMessage(req, res){
-    const conversationID = req.body.id
+
+async function getConversationMessages(req, res){
+    const conversation_id = req.query.conversation_id
+
+    const {data, error} = await supabase.from('message').select().eq('conversation_id', conversation_id)
+
+    if (error) res.json(error)
+    else res.json(data)
+}
+
+async function readMessage(req, res) {
 
     const messages = await redisCaching.getOrSetCache(`messages:${conversationID}`, async () => {
 
@@ -23,5 +32,5 @@ async function getMessage(req, res){
 }
 
 module.exports = {
-    addMessage, getMessage
+    addMessage, getConversationMessages, readMessage
 }
