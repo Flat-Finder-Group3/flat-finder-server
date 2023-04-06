@@ -26,10 +26,10 @@ async function getConversationMessages(req, res) {
 async function readMessage(req, res) {
 
   console.log("here is the body: ", req.body)
-  const {data, error} = await supabase.from('message').update({ is_read: true }).eq('id', req.body.message.id).select();
+  const {data, error} = await supabase.from('message').update({ is_read: true }).eq('id', req.body.message_id).select();
 
 
-  redisCaching.removeData(`messages:${req.body.message.conversation_id}`);
+  redisCaching.removeData(`messages:${req.body.conversation_id}`);
 
   if (error) res.json(error)
   else res.json(data)
