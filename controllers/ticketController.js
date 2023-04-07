@@ -51,15 +51,15 @@ async function changeStatus(req, res) {
 
     const response = await supabase
         .from('ticket')
-        .update({ status: newStatus })
+        .update({ status: newStatus, admin_comment })
         .eq('id', ticketID)
-        .select('creator')
+        .select('*')
 
     redisCaching.removeData(`tickets:${response.data[0].creator}`)
 
 
-    if (error) res.json(error)
-    else res.json(data)
+    if (response.error) res.json(response.error)
+    else res.json(response.data[0])
 }
 
 module.exports = {
