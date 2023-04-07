@@ -51,9 +51,11 @@ router.post('/conversation', conversation_controller.addConversation)
 router.get('/conversation', conversation_controller.getConversationById)
 router.get('/conversation/:user1/:user2', conversation_controller.getConversation);
 
+router.put('/messages', message_controller.readUserMessage)
 
 router.post('/message', message_controller.addMessage)
 router.put('/message', message_controller.readMessage)
 router.get('/message', message_controller.getConversationMessages)
+
 
 module.exports = router
