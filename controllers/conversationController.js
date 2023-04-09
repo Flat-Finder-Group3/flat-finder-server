@@ -62,12 +62,12 @@ async function getConversation(req, res) {
     const [result1, result2] = await Promise.all([
         supabase
             .from("conversation")
-            .select("*")
+            .select("*, user2 ( * )")
             .eq("user1", user1)
             .eq("user2", user2),
         supabase
             .from("conversation")
-            .select("*")
+            .select("*, user1 ( * )")
             .eq("user1", user2)
             .eq("user2", user1)
     ])
