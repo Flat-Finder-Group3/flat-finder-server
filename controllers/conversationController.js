@@ -78,7 +78,7 @@ async function getConversation(req, res) {
         console.log('second if', result1.data, result2.data)
         res.json(result2.data[0]);
     } else if (result1.data.length === 0 && result2.data.length === 0) {
-        const response = await supabase.from('conversation').insert({ user1, user2 }).select()
+        const response = await supabase.from('conversation').insert({ user1, user2 }).select("*, user2 ( * )")
         console.log({ response })
         res.json(response.data[0])
     }
