@@ -4,8 +4,14 @@ const redis = require('redis')
 //got to use the right redis url
 const redisClient = redis.createClient({
     legacyMode: true,
-    url: "rediss://red-cgi40afdvk4o0mtvm5cg:AtPLtcLlRtcRquz47ZBiKWQpduqlnSex@frankfurt-redis.render.com:6379"
+    url: "rediss://red-cgi40afdvk4o0mtvm5cg:AtPLtcLlRtcRquz47ZBiKWQpduqlnSex@frankfurt-redis.render.com:6379",
+    socket: {
+        reconnectStrategy: 2000
+    }
 })
+
+
+redisClient.on('error', err => console.log('Redis Client Error', err))
 
 const DEFAULT_EXPIRATION = 3600; // 1 hour
 
