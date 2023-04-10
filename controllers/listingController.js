@@ -33,6 +33,7 @@ async function addListing(req, res) {
             const response3 = await supabase.from('listing').update({ forum: forumID }).eq('id', listingID).select()
             
             redisCaching.removeData("listings")
+            redisCaching.removeData(`listings:${req.body.owner}`)
             
             res.status(200).json(response3)
         }
