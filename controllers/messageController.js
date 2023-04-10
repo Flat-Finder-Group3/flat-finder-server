@@ -17,6 +17,7 @@ async function getConversationMessages(req, res) {
   const { data, error } = await supabase
     .from("message")
     .select()
+    .order("created_at", {ascending: true})
     .eq("conversation_id", conversation_id);
 
   if (error) res.json(error);
