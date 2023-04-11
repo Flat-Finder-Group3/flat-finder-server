@@ -22,7 +22,7 @@ async function getListings(req, res) {
 
 async function addListing(req, res) {
     const listing = req.body
-    const response = await supabase.from('listing').insert(listing).select("*, owner ( * ) ")
+    const response = await supabase.from('listing').insert(listing).select()
     const listingID = response.data[0].id
 
     if (response) {
@@ -30,7 +30,7 @@ async function addListing(req, res) {
         const forumID = response2.data[0].id
 
         if (response2) {
-            const response3 = await supabase.from('listing').update({ forum: forumID }).eq('id', listingID).select()
+            const response3 = await supabase.from('listing').update({ forum: forumID }).eq('id', listingID).select("*, owner(*)")
             
             redisCaching.removeData("listings")
             redisCaching.removeData(`listings:${req.body.owner}`)
