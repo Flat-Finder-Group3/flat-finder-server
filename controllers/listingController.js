@@ -22,7 +22,7 @@ async function getListings(req, res) {
 
 async function addListing(req, res) {
     const listing = req.body
-    const response = await supabase.from('listing').insert(listing).select()
+    const response = await supabase.from('listing').insert(listing).select("*, owner ( * ) ")
     const listingID = response.data[0].id
 
     if (response) {
